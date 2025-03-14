@@ -1,0 +1,134 @@
+.TaskTracker {
+  margin-top: 71px;
+
+  h1 {
+    margin-bottom: 52px;
+    font-size: 34px;
+    color: #212529;
+  }
+
+  select {
+    height: 44px;
+    padding-left: 10px;
+    margin-right: 45px;
+  }
+
+  select:last-of-type {
+    margin-right: 28px;
+  }
+
+  select:focus {
+    color: #8338ec;
+    option {
+      color: black;
+    }
+  }
+
+  .filters {
+    max-width: 650.4px;
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding-inline: 18px;
+    position: relative;
+  }
+}
+
+.select-box {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  #filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:focus {
+      color: #8338ec;
+    }
+    #filter-name {
+      margin-right: 8px;
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    width: 626px;
+    top: 55px;
+    left: 0;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding-inline: 30px;
+    overflow-y: auto;
+    z-index: 10;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-block: 30px;
+        
+      input {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        border: 1.5px solid #8338EC;
+        background-color: white;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        position: relative;
+
+        &:checked::after {
+          content: "";
+          position: absolute;
+          top: 50%;  
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 14px;
+          height: 10px;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background: url("/assets/images/Vector.svg");  
+        }
+      }
+    }
+
+    button {
+      width: 155px;
+      height: 35px;
+      background-color: #8338ec;
+      border-radius: 20px;
+      border: none;
+      font-size: 16px;
+      color: white;
+      margin-left: auto;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .dropdown label {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+
+    input {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+  }
+}
