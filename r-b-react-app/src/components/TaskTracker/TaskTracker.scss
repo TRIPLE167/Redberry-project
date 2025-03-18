@@ -1,28 +1,16 @@
 .TaskTracker {
-  margin-top: 71px;
+ 
 
   h1 {
     margin-bottom: 52px;
     font-size: 34px;
     color: #212529;
+    margin-top: 71px;
   }
 
-  select {
-    height: 44px;
-    padding-left: 10px;
-    margin-right: 45px;
-  }
+ 
 
-  select:last-of-type {
-    margin-right: 28px;
-  }
-
-  select:focus {
-    color: #8338ec;
-    option {
-      color: black;
-    }
-  }
+ 
 
   .filters {
     max-width: 650.4px;

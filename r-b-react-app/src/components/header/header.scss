@@ -2,10 +2,16 @@ main{
     display: flex;
     justify-content: space-between;
     padding-top: 30px;
-    div{
+    &>button{
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        
+    }
+    .buttons{
         display: flex;
         column-gap: 40px;
-        button{
+        .addEmployee{
             font-size: 16px;
             width: 225px;
             height: 39px;
@@ -14,13 +20,18 @@ main{
             border: 1px solid #8338EC;
             cursor: pointer;
         }
-        button:last-of-type{
+        #new_task{
             width: 268px;
+            height: 39px;
             background-color: #8338EC;
             display: flex;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
             height: 40px;
             justify-content: center;
             color: #FFFFFF;
+            cursor: pointer;
             align-items: center;
             i{
                 font-size: 18px;
