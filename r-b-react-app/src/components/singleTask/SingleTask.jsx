@@ -325,7 +325,7 @@ const SingleTask = () => {
                     <label htmlFor="textarea">
                       <button onClick={() => handleReplyClick(comment.id)}>
                         <img
-                          src="/Redberry-project/assets/images/left.svg"
+                          src=" \Redberry-project\assets\images\Left.svg"
                           id="reply"
                           alt="reply"
                         />
