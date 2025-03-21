@@ -1,16 +1,10 @@
 .TaskTracker {
- 
-
   h1 {
     margin-bottom: 52px;
     font-size: 34px;
     color: #212529;
     margin-top: 71px;
   }
-
- 
-
- 
 
   .filters {
     max-width: 650.4px;
@@ -22,6 +16,36 @@
     border-radius: 10px;
     padding-inline: 18px;
     position: relative;
+  }
+
+  .selected-filters {
+    margin-top: 25px;
+    display: flex;
+    column-gap: 8px;
+
+    button {
+      padding-inline: 15px;
+      height: 29px;
+      border-radius: 43px;
+      border: 1px solid #ced4da;
+      color: #343a40;
+      background-color: transparent;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+
+      img {
+        margin-left: 7.5px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+    #clear{
+      background-color: none;
+      border: none;
+    }
   }
 }
 
@@ -40,6 +64,7 @@
     &:focus {
       color: #8338ec;
     }
+
     #filter-name {
       margin-right: 8px;
     }
@@ -64,12 +89,19 @@
       flex-direction: column;
       justify-content: center;
       margin-block: 30px;
-        
+
+      img {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+
       input {
         width: 22px;
         height: 22px;
         border-radius: 6px;
-        border: 1.5px solid #8338EC;
+        border: 1.5px solid #8338ec;
         background-color: white;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -79,14 +111,14 @@
         &:checked::after {
           content: "";
           position: absolute;
-          top: 50%;  
+          top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           width: 14px;
           height: 10px;
           background-repeat: no-repeat;
           background-size: contain;
-          background: url("/assets/images/Vector.svg");  
+          background: url("/assets/images/Vector.svg");
         }
       }
     }

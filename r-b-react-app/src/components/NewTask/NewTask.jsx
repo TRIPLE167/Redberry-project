@@ -2,22 +2,28 @@ import React, { useState, useContext, useEffect } from "react";
 import Header from "../header/Header";
 import { DataContext } from "../Database-files/DataBase";
 import CustomDropdown from "../cards/CustomDropdown";
+import AddEmployee from "../addEmployee/AddEmployee";
 import "./NewTask.scss";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function NewTask() {
-  const { statuses, priorities, departments, employees } =
+  const { statuses, priorities, departments, employees, token } =
     useContext(DataContext);
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
-  const [priority, setPriority] = useState(null);
-  const [status, setStatus] = useState(null);
+  const [priority, setPriority] = useState(1);
+  const [status, setStatus] = useState(1);
   const [department, setDepartment] = useState(null);
   const [employee, setEmployee] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [titleValidation, setTitleValidation] = useState("#6c757d");
   const [desValidation, setDesValidation] = useState("#6c757d");
+  const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
+  
   const validateForm = () => {
     let isValid = true;
 
@@ -42,21 +48,64 @@ function NewTask() {
   };
 
   useEffect(() => {
+    console.log("Selected Date:", selectedDate);
+  }, [selectedDate]);
+
+  useEffect(() => {
     if (department === null) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
   }, [department]);
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     console.log("Task Title:", taskTitle);
     console.log("Task Description:", taskDescription);
+    console.log("Priority:", priority);
+    console.log("Status:", status);
+    console.log("Department:", department);
+    console.log("Employee:", employee);
     console.log("Selected Date:", selectedDate);
-  };
 
+    navigate("/");
+
+    const formData = new FormData();
+    formData.append("name", taskTitle);
+    formData.append("description", taskDescription);
+    formData.append("due_date", selectedDate);
+    formData.append("status_id", status);
+    formData.append("employee_id", employee);
+    formData.append("priority_id", priority);
+    formData.append("department_id", department);
+
+    try {
+      await axios.post(
+        "https://momentum.redberryinternship.ge/api/tasks",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        }
+      );
+
+      setTaskTitle("");
+      setTaskDescription("");
+      setPriority(null);
+      setStatus(null);
+      setDepartment(null);
+      setEmployee(null);
+      DefaultDate();
+    } catch (error) {
+      console.error("Error submitting form", error);
+    }
+  };
   const DefaultDate = () => {
     const today = new Date();
     today.setDate(today.getDate() + 1);
@@ -140,6 +189,7 @@ function NewTask() {
               width={"550px"}
               disabled={disabled}
               departmentValue={department}
+              setVisible={setVisible}
             />
 
             <label>
@@ -147,6 +197,7 @@ function NewTask() {
               <input
                 type="date"
                 value={selectedDate}
+                min={new Date().toISOString().split("T")[0]}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
             </label>
@@ -157,6 +208,7 @@ function NewTask() {
           </div>
         </div>
       </form>
+      <AddEmployee visible={visible} setVisible={setVisible} />
     </>
   );
 }

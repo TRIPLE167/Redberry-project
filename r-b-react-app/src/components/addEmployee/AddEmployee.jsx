@@ -1,20 +1,20 @@
 import "./addEmployee.scss";
 import { DataContext } from "../Database-files/DataBase";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-function AddEmployee({ isOpen, setIsOpen }) {
+function AddEmployee({ isOpen, setIsOpen, visible, setVisible }) {
   const { departments, token } = useContext(DataContext);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const [department, setDepartment] = useState(undefined);
+  const [department, setDepartment] = useState(1);
   const [nameValidation, setNameValidation] = useState("#6C757D");
   const [lastNameValidation, setLastNameValidation] = useState("#6C757D");
-
+  const fileInputRef = useRef(null);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file && file.size <= 600000 && file.type.startsWith("image/")) {
@@ -40,7 +40,7 @@ function AddEmployee({ isOpen, setIsOpen }) {
     } else {
       setLastNameValidation("green");
     }
-    if (!avatar || !department) {
+    if (!avatar) {
       isValid = false;
     }
 
@@ -57,13 +57,11 @@ function AddEmployee({ isOpen, setIsOpen }) {
     formData.append("avatar", avatar);
     formData.append("department_id", department);
 
-    console.log(
-      formData.name,
-      formData.surname,
-      formData.avatar,
-      formData.department_id
-    );
-
+    console.log("name:", firstName);
+    console.log("surname:", lastName);
+    console.log("avatar:", avatar);
+    console.log("department_id:", department);
+    
     try {
       await axios.post(
         "https://momentum.redberryinternship.ge/api/employees",
@@ -79,8 +77,9 @@ function AddEmployee({ isOpen, setIsOpen }) {
       setFirstName("");
       setLastName("");
       setAvatar(null);
-      setDepartment("");
-      setIsOpen(false);
+      setDepartment(1);
+      if (setIsOpen) setIsOpen(false);
+      if (setVisible) setVisible(false);
     } catch (error) {
       console.error("Error submitting form", error);
     }
@@ -90,15 +89,24 @@ function AddEmployee({ isOpen, setIsOpen }) {
     setFirstName("");
     setLastName("");
     setAvatar(null);
-    setDepartment("");
+    setDepartment(1);
     setNameValidation("#6c757d");
     setLastNameValidation("#6c757d");
-    setIsOpen(false);
     validateForm();
+
+    if (setVisible) {
+      setVisible(false);
+    }
+    if (setIsOpen) {
+      setIsOpen(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: isOpen ? "" : "none" }}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: isOpen || visible ? "" : "none" }}
+    >
       <div className="main-container">
         <div>
           <button onClick={handleClosing}>
@@ -158,7 +166,7 @@ function AddEmployee({ isOpen, setIsOpen }) {
             <h3 className="bot-2-h3">ავატარი</h3>
             <label>
               <div className="file-upload">
-                <input type="file" id="file" onChange={handleFileChange} />
+                <input type="file" id="file" onChange={handleFileChange} ref={fileInputRef} />
                 <div>
                   {!avatar && (
                     <div>
@@ -182,6 +190,7 @@ function AddEmployee({ isOpen, setIsOpen }) {
                           event.preventDefault();
 
                           setAvatar(null);
+                          fileInputRef.current.value = null;
                         }}
                       >
                         <img src="/assets/images/trashBin.svg" alt="" />
@@ -219,7 +228,7 @@ function AddEmployee({ isOpen, setIsOpen }) {
       </div>
       <div
         className="background-blur"
-        style={{ display: isOpen ? "" : "none" }}
+        style={{ display: isOpen || visible ? "" : "none" }}
         onClick={handleClosing}
       ></div>
     </form>

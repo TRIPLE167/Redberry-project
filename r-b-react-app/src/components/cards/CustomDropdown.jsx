@@ -8,17 +8,21 @@ const CustomDropdown = ({
   width,
   disabled,
   departmentValue,
+  setVisible,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [selectedSurname, setSelectedSurname] = useState("");
   const [profile, setProfile] = useState("");
-  useEffect(() => {
-    console.log(departmentValue);
-  }, [departmentValue]);
 
+  
+  const filteredOptions = label === "პასუხისმგებელი თანამშრომელი"
+    ? options.filter((option) => option.department.id === departmentValue)
+    : options;  
   useEffect(() => {
+    console.log("Filtered Options:", filteredOptions);
+
     if (options.length > 0) {
       let selectedOption = options.find(
         (option) => option.id === selectedValue
@@ -33,20 +37,41 @@ const CustomDropdown = ({
         );
       }
 
-      
+    
+      if (!selectedOption && filteredOptions.length > 0) {
+        selectedOption = filteredOptions[0];
+        onSelect(selectedOption.id);
+      }
+
       if (selectedOption) {
+        console.log("Selected Option:", selectedOption);
         setSelectedIcon(selectedOption.icon || "");
         setProfile(selectedOption.avatar || "");
         setSelectedName(selectedOption.name || "");
         setSelectedSurname(selectedOption.surname || "");
+      } else {
+        console.error("No matching option found");
       }
     }
-  }, [options, selectedValue, departmentValue]);
+  }, [options, selectedValue, departmentValue, filteredOptions, label, onSelect]);
+
+ 
+  useEffect(() => {
+    if (label === "პასუხისმგებელი თანამშრომელი" && filteredOptions.length > 0) {
+      const defaultOption = filteredOptions[0];
+      setSelectedIcon(defaultOption.icon || "");
+      setProfile(defaultOption.avatar || "");
+      setSelectedName(defaultOption.name || "");
+      setSelectedSurname(defaultOption.surname || "");
+      onSelect(defaultOption.id);
+    }
+  }, [departmentValue, filteredOptions, label, onSelect]);
 
   const toggleDropdown = () => setIsVisible(!isVisible);
 
   return (
     <div>
+ 
       <h6
         style={{
           color: disabled ? "#ADB5BD" : "",
@@ -71,19 +96,19 @@ const CustomDropdown = ({
       >
         <div className="custom-dropdown-selected">
           <div>
-            {label === "პრიორიტეტი" && <img src={selectedIcon} alt="icon" />}
+            {label === "პრიორიტეტი" && (
+              <img src={selectedIcon} alt="icon" className="icon" />
+            )}
             <span>
               {label === "პასუხისმგებელი თანამშრომელი" ? (
-                <>
-                  <div className="employee-name-profile">
-                    {profile !== "" && (
-                      <img className="profile" src={profile} />
-                    )}
-                    <span>
-                      {disabled ? "" : ` ${selectedName} ${selectedSurname}`}
-                    </span>
-                  </div>
-                </>
+                <div className="employee-name-profile">
+                  {profile !== "" && (
+                    <img className="profile" src={profile} alt="profile" />
+                  )}
+                  <span>
+                    {disabled ? "" : ` ${selectedName} ${selectedSurname}`}
+                  </span>
+                </div>
               ) : (
                 <span>{selectedName}</span>
               )}
@@ -102,64 +127,46 @@ const CustomDropdown = ({
             style={{ borderColor: "#8338EC" }}
           >
             {label === "პასუხისმგებელი თანამშრომელი" && (
-              <div id="addEmployee">
+              <div id="addEmployee" onClick={() => setVisible(true)}>
                 <img src="/assets/images/addEmployee.svg" alt="add employee" />
                 <p>დაამატე თანამშრომელი</p>
               </div>
             )}
-            {options.map((option) => {
-              if (
-                label === "პასუხისმგებელი თანამშრომელი" &&
-                option.department.id === departmentValue
-              ) {
-                return (
-                  <div
-                    key={option.id}
-                    className="custom-dropdown-option"
-                    onClick={() => {
-                      onSelect(option.id);
-                      setSelectedName(option.name);
-                      setSelectedSurname(option.surname);
-                      setIsVisible(false);
-                    }}
-                  >
-                    <div className="employee-name-profile">
-                      <img
-                        src={option.avatar}
-                        alt="profile"
-                        className="profile"
-                      />
-                      <span>
-                        {option.name} {option.surname}
-                      </span>
-                    </div>
-                  </div>
-                );
-              } else if (label !== "პასუხისმგებელი თანამშრომელი") {
-                return (
-                  <div
-                    key={option.id}
-                    className="custom-dropdown-option"
-                    onClick={() => {
-                      onSelect(option.id);
-                      setSelectedIcon(option.icon);
-                      setSelectedName(option.name);
-                      setSelectedSurname(option.surname);
-                      setIsVisible(false);
-                    }}
-                  >
-                    {label === "პრიორიტეტი" && (
-                      <img id="icon" src={option.icon} />
-                    )}
-
+            {filteredOptions.map((option) => (
+              <div
+                key={option.id}
+                className="custom-dropdown-option"
+                onClick={() => {
+                  onSelect(option.id);
+                  setSelectedIcon(option.icon);
+                  setSelectedName(option.name);
+                  setSelectedSurname(option.surname);
+                  setProfile(option.avatar);
+                  setIsVisible(false);
+                }}
+              >
+                {label === "პრიორიტეტი" && (
+                  <img className="icon" src={option.icon} alt="icon" />
+                )}
+                {label === "პასუხისმგებელი თანამშრომელი" && (
+                  <div className="employee-name-profile">
+                    <img
+                      src={option.avatar}
+                      alt="profile"
+                      className="profile"
+                    />
                     <span>
                       {option.name} {option.surname}
                     </span>
                   </div>
-                );
-              }
-              return null;
-            })}
+                )}
+                {label !== "პასუხისმგებელი თანამშრომელი" && (
+                  <span>
+                    {option.name} {option.surname}
+                  </span>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -167,4 +174,5 @@ const CustomDropdown = ({
   );
 };
 
+ 
 export default CustomDropdown;

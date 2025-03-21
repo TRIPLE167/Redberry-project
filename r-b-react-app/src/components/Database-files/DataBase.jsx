@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
-const token = "9e744d51-c00b-4c42-861d-d86225d58d9a"; 
+const token = "9e7ad201-8779-4162-b3cb-b69d79293f67";
 
 export const DataContext = createContext();
 
@@ -10,11 +10,18 @@ export const DataProvider = ({ children }) => {
   const [priorities, setPriorities] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statusesRes, prioritiesRes, departmentsRes, employeesRes] = await Promise.all([
+        const [
+          statusesRes,
+          prioritiesRes,
+          departmentsRes,
+          employeesRes,
+          tasksRes,
+        ] = await Promise.all([
           axios.get("https://momentum.redberryinternship.ge/api/statuses", {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,22 +42,30 @@ export const DataProvider = ({ children }) => {
               Authorization: `Bearer ${token}`,
             },
           }),
+          axios.get("https://momentum.redberryinternship.ge/api/tasks", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
         ]);
 
         setStatuses(statusesRes.data);
         setPriorities(prioritiesRes.data);
         setDepartments(departmentsRes.data);
         setEmployees(employeesRes.data);
+        setTasks(tasksRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [employees]); 
+  }, [employees]);
 
   return (
-    <DataContext.Provider value={{ statuses, priorities, departments, employees, token }}>
+    <DataContext.Provider
+      value={{ statuses, priorities, departments, employees, tasks, token }}
+    >
       {children}
     </DataContext.Provider>
   );
