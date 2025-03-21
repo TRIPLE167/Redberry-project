@@ -1,0 +1,96 @@
+.single-task {
+  margin-top: 51px;
+  .single-task-left {
+    .priority-department {
+      display: flex;
+      align-items: center;
+      column-gap: 18px;
+      margin-bottom: 20px;
+      .priority {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 106px;
+        height: 32px;
+        font-size: 16px;
+        column-gap: 7px;
+        border-radius: 6px;
+      }
+      .department {
+        font-size: 10px;
+        border-radius: 15px;
+        width: 88px;
+        height: 29px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+    }
+    h3 {
+      font-size: 34px;
+      margin-bottom: 26px;
+      color: #212529;
+      max-width: 715px;
+    }
+    #description {
+      max-width: 715px;
+      font-size: 18px;
+    }
+    h4 {
+      margin-top: 73px;
+      margin-bottom: 40px;
+      color: #2a2a2a;
+      font-size: 24px;
+    }
+    .task-details {
+      display: flex;
+      column-gap: 50px;
+      .details-left {
+        display: flex;
+        flex-direction: column;
+        row-gap: 46px;
+        p {
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          color: #474747;
+
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 4px;
+          }
+        }
+      }
+      .details-right {
+        display: flex;
+        flex-direction: column;
+        row-gap: 44px;
+        #employee {
+          display: flex;
+          align-items: center;
+          column-gap: 12px;
+          img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+          }
+          p {
+            font-size: 11px;
+            color: #474747;
+          }
+          h5 {
+            font-size: 14px;
+            color: #0d0f10;
+            margin-top: 3px;
+          }
+        }
+        #date {
+          color: #0d0f10;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

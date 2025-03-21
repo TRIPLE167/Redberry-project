@@ -9,6 +9,7 @@ function RenderTask({
 }) {
   const { tasks, statuses } = useContext(DataContext);
   const navigate = useNavigate();
+
   const getStatusColor = (statusId) => {
     switch (statusId) {
       case 1:
@@ -48,6 +49,24 @@ function RenderTask({
         return "ტექნოლოგია";
       case 7:
         return "მედია";
+    }
+  };
+  const departmentColors = (departmentName) => {
+    switch (departmentName) {
+      case "ადმინისტრაციის დეპარტამენტი":
+        return "#FF66A8";
+      case "ადამიანური რესურსების დეპარტამენტი":
+        return "#FFD86D ";
+      case "ფინანსების დეპარტამენტი":
+        return "#FD9A6A";
+      case "გაყიდვები და მარკეტინგის დეპარტამენტი":
+        return "#89B6FF";
+      case "ლოჯოსტიკის დეპარტამენტი":
+        return "#FD9A6A";
+      case "ტექნოლოგიების დეპარტამენტი":
+        return "#FF66A8";
+      case "მედიის დეპარტამენტი":
+        return "#89B6FF";
     }
   };
 
@@ -104,7 +123,7 @@ function RenderTask({
                     </div>
                     <div
                       className="task-profession"
-                      style={{ backgroundColor: getStatusColor(status.id) }}
+                      style={{ backgroundColor: departmentColors(task.department.name) }}
                     >
                       {departmentNames(task.department.id)}
                     </div>
