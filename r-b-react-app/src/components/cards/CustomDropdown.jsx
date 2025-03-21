@@ -16,13 +16,11 @@ const CustomDropdown = ({
   const [selectedSurname, setSelectedSurname] = useState("");
   const [profile, setProfile] = useState("");
 
-  
-  const filteredOptions = label === "პასუხისმგებელი თანამშრომელი"
-    ? options.filter((option) => option.department.id === departmentValue)
-    : options;  
+  const filteredOptions =
+    label === "პასუხისმგებელი თანამშრომელი"
+      ? options.filter((option) => option.department.id === departmentValue)
+      : options;
   useEffect(() => {
-    console.log("Filtered Options:", filteredOptions);
-
     if (options.length > 0) {
       let selectedOption = options.find(
         (option) => option.id === selectedValue
@@ -37,14 +35,12 @@ const CustomDropdown = ({
         );
       }
 
-    
       if (!selectedOption && filteredOptions.length > 0) {
         selectedOption = filteredOptions[0];
         onSelect(selectedOption.id);
       }
 
       if (selectedOption) {
-        console.log("Selected Option:", selectedOption);
         setSelectedIcon(selectedOption.icon || "");
         setProfile(selectedOption.avatar || "");
         setSelectedName(selectedOption.name || "");
@@ -53,9 +49,15 @@ const CustomDropdown = ({
         console.error("No matching option found");
       }
     }
-  }, [options, selectedValue, departmentValue, filteredOptions, label, onSelect]);
+  }, [
+    options,
+    selectedValue,
+    departmentValue,
+    filteredOptions,
+    label,
+    onSelect,
+  ]);
 
- 
   useEffect(() => {
     if (label === "პასუხისმგებელი თანამშრომელი" && filteredOptions.length > 0) {
       const defaultOption = filteredOptions[0];
@@ -71,7 +73,6 @@ const CustomDropdown = ({
 
   return (
     <div>
- 
       <h6
         style={{
           color: disabled ? "#ADB5BD" : "",
@@ -174,5 +175,4 @@ const CustomDropdown = ({
   );
 };
 
- 
 export default CustomDropdown;

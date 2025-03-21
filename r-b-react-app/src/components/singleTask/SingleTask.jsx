@@ -1,13 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { DataContext } from "../Database-files/DataBase";
 import axios from "axios";
 import "./SingleTask.scss";
 import Header from "../header/Header";
+import CustomDropdown from "../cards/CustomDropdown";
+
 const SingleTask = () => {
   const { id } = useParams();
-  const { token } = useContext(DataContext);
+  const { token, statuses } = useContext(DataContext);
   const [task, setTask] = useState(null);
+  const [status, setStatus] = useState(null);
+  const hasMounted = useRef(false);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -21,6 +27,7 @@ const SingleTask = () => {
           }
         );
         setTask(response.data);
+        setStatus(response.data.status.id);
       } catch (error) {
         console.error("Error fetching task details:", error);
       }
@@ -28,6 +35,92 @@ const SingleTask = () => {
 
     fetchTask();
   }, [id, token]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(
+          `https://momentum.redberryinternship.ge/api/tasks/${task.id}/comments`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        setComments(response.data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    if (task) {
+      fetchComments();
+    }
+  }, [task, id, token]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (comment !== "") {
+      try {
+        const response = await axios.post(
+          `https://momentum.redberryinternship.ge/api/tasks/${task.id}/comments`,
+          {
+            text: comment,
+            task_id: task.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Comment submitted successfully:", response.data);
+        setComments((prevComments) => [response.data, ...prevComments]);
+        setComment("");
+      } catch (error) {
+        console.error("Error submitting comment:", error);
+      }
+    }
+  };
+  useEffect(() => {});
+
+  useEffect(() => {
+    if (hasMounted.current && status !== null && task !== null) {
+      const updateStatus = async () => {
+        try {
+          await axios.put(
+            `https://momentum.redberryinternship.ge/api/tasks/${task.id}`,
+            {
+              name: task.name,
+              description: task.description,
+              status_id: status,
+              priority_id: task.priority.id,
+              department_id: task.department.id,
+              employee_id: task.employee.id,
+              due_date: task.due_date,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("Status updated successfully!");
+        } catch (error) {
+          console.error("Error updating task status:", error);
+        }
+      };
+
+      updateStatus();
+    } else {
+      hasMounted.current = true;
+    }
+  }, [status, task, token]);
 
   if (!task) {
     return <div> </div>;
@@ -80,6 +173,7 @@ const SingleTask = () => {
         return "#89B6FF";
     }
   };
+
   return (
     <>
       <Header />
@@ -100,7 +194,9 @@ const SingleTask = () => {
             </div>
             <div
               className="department"
-              style={{ backgroundColor: departmentColors(task.department.name) }}
+              style={{
+                backgroundColor: departmentColors(task.department.name),
+              }}
             >
               {departmentNames(task.department.id)}
             </div>
@@ -126,7 +222,14 @@ const SingleTask = () => {
             </div>
             <div className="details-right">
               <div>
-                <div>mzad testirebistvis</div>
+                <div>
+                  <CustomDropdown
+                    options={statuses}
+                    selectedValue={status}
+                    onSelect={setStatus}
+                    width={"259px"}
+                  />
+                </div>
               </div>
 
               <div id="employee">
@@ -145,7 +248,43 @@ const SingleTask = () => {
             </div>
           </div>
         </div>
-        <div className="single-task-right"></div>
+        <div className="single-task-right">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <textarea
+                placeholder="დაწერე კომენტარი"
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <button type="submit">დააკომენტარე</button>
+            </div>
+          </form>
+
+          <h6 id="comments">
+            კომენტარები <span>{comments.length}</span>
+          </h6>
+
+          {comments.map((comment) => {
+            return (
+              <div className="comments" key={comment.id}>
+                <div className="commentInfo">
+                  <img src={comment.author_avatar} id="profile" alt="author" />
+                  <div className="comment">
+                    <h6>{comment.author_nickname}</h6>
+                    <p>{comment.text}</p>
+                    <button>
+                      <img
+                        src=" \assets\images\Left.svg"
+                        id="reply"
+                        alt="reply"
+                      />
+                      უპასუხე
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );

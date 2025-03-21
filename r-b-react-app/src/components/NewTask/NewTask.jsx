@@ -23,7 +23,6 @@ function NewTask() {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
-  
   const validateForm = () => {
     let isValid = true;
 
@@ -90,7 +89,7 @@ function NewTask() {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
           },
         }
       );
