@@ -45,29 +45,38 @@ const CustomDropdown = ({
         setProfile(selectedOption.avatar || "");
         setSelectedName(selectedOption.name || "");
         setSelectedSurname(selectedOption.surname || "");
-      } else {
-        console.error("No matching option found");
+      }
+    }
+  }, [departmentValue, filteredOptions, label, onSelect, selectedValue]);
+
+  useEffect(() => {
+    let selectedOption = null;
+
+    if (options.length > 0) {
+      selectedOption = options.find((option) => option.id === selectedValue);
+    }
+
+    if (label === "პასუხისმგებელი თანამშრომელი" && filteredOptions.length > 0) {
+      const defaultOption = filteredOptions[0];
+
+      const isInvalid =
+        !selectedOption || selectedOption.department?.id !== departmentValue;
+
+      if (isInvalid) {
+        onSelect(defaultOption.id);
+        setProfile(defaultOption.avatar || "");
+        setSelectedName(defaultOption.name || "");
+        setSelectedSurname(defaultOption.surname || "");
       }
     }
   }, [
+    departmentValue,
+    label,
+    filteredOptions,
     options,
     selectedValue,
-    departmentValue,
-    filteredOptions,
-    label,
     onSelect,
   ]);
-
-  useEffect(() => {
-    if (label === "პასუხისმგებელი თანამშრომელი" && filteredOptions.length > 0) {
-      const defaultOption = filteredOptions[0];
-      setSelectedIcon(defaultOption.icon || "");
-      setProfile(defaultOption.avatar || "");
-      setSelectedName(defaultOption.name || "");
-      setSelectedSurname(defaultOption.surname || "");
-      onSelect(defaultOption.id);
-    }
-  }, [departmentValue, filteredOptions, label, onSelect]);
 
   const toggleDropdown = () => setIsVisible(!isVisible);
 
@@ -162,9 +171,7 @@ const CustomDropdown = ({
                   </div>
                 )}
                 {label !== "პასუხისმგებელი თანამშრომელი" && (
-                  <span>
-                    {option.name} {option.surname}
-                  </span>
+                  <span>{option.name}</span>
                 )}
               </div>
             ))}

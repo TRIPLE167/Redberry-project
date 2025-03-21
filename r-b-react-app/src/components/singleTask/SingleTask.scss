@@ -53,7 +53,7 @@
       .details-left {
         display: flex;
         flex-direction: column;
-        row-gap: 46px;
+        row-gap: 62px;
         p {
           display: flex;
           align-items: center;
@@ -70,11 +70,13 @@
       .details-right {
         display: flex;
         flex-direction: column;
-        row-gap: 30px;
+        row-gap: 59px;
+
         #employee {
           display: flex;
           align-items: center;
           column-gap: 12px;
+          margin-top: 32px;
           img {
             width: 32px;
             height: 32px;
@@ -153,42 +155,63 @@
         margin-left: 7px;
       }
     }
-    .comments{
+    .comments {
       margin-bottom: 40px;
 
-      .commentInfo{
+      .commentInfo {
         display: flex;
         column-gap: 12px;
-          #profile{
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
+        #profile {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+        }
+        .comment {
+          h6 {
+            color: #212529;
+            font-size: 18px;
           }
-          .comment{
-            h6{
-              color: #212529;
-              font-size: 18px;
-            }
-            p{
-              color: #021526;
-              max-width: 548px;
-              margin-block: 8px;
-            }
-            button{
-              background-color: transparent;
-              border: none;
-              color: #8338EC;
-              font-size: 12px;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              column-gap: 6px;
-              #reply{
-                width: 16px;
-                height: 16px;
-              }
+          p {
+            color: #021526;
+            max-width: 548px;
+            margin-block: 8px;
+          }
+          button {
+            background-color: transparent;
+            border: none;
+            color: #8338ec;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+            #reply {
+              width: 16px;
+              height: 16px;
             }
           }
+        }
+      }
+      .reply-commentInfo {
+        
+        padding-left: 38px;
+        margin-top: 20px;
+        #profile {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+        }
+        .comment {
+          h6 {
+            color: #212529;
+            font-size: 18px;
+          }
+          p {
+            color: #021526;
+            max-width: 548px;
+            margin-block: 8px;
+          }
+        }
       }
     }
   }

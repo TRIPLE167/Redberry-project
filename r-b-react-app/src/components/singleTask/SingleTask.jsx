@@ -14,6 +14,18 @@ const SingleTask = () => {
   const hasMounted = useRef(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [replyToCommentId, setReplyToCommentId] = useState(null);
+  const textareaRef = useRef(null);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+  const totalComments = comments.reduce(
+    (acc, comment) => acc + 1 + (comment.sub_comments?.length || 0),
+    0
+  );
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -69,6 +81,7 @@ const SingleTask = () => {
           {
             text: comment,
             task_id: task.id,
+            parent_id: replyToCommentId || null,
           },
           {
             headers: {
@@ -79,14 +92,38 @@ const SingleTask = () => {
         );
 
         console.log("Comment submitted successfully:", response.data);
-        setComments((prevComments) => [response.data, ...prevComments]);
+
+        if (replyToCommentId) {
+          setComments((prevComments) =>
+            prevComments.map((comment) => {
+              if (comment.id === replyToCommentId) {
+                return {
+                  ...comment,
+                  sub_comments: [
+                    response.data,
+                    ...(comment.sub_comments || []),
+                  ],
+                };
+              }
+              return comment;
+            })
+          );
+        } else {
+          setComments((prevComments) => [response.data, ...prevComments]);
+        }
+
         setComment("");
+        setReplyToCommentId(null);
       } catch (error) {
         console.error("Error submitting comment:", error);
       }
     }
   };
-  useEffect(() => {});
+
+  const handleReplyClick = (commentId) => {
+    setReplyToCommentId(commentId);
+    textareaRef.current.focus();
+  };
 
   useEffect(() => {
     if (hasMounted.current && status !== null && task !== null) {
@@ -155,6 +192,7 @@ const SingleTask = () => {
         return "მედია";
     }
   };
+
   const departmentColors = (departmentName) => {
     switch (departmentName) {
       case "ადმინისტრაციის დეპარტამენტი":
@@ -223,25 +261,27 @@ const SingleTask = () => {
             <div className="details-right">
               <div>
                 <div>
-                  <CustomDropdown
-                    options={statuses}
-                    selectedValue={status}
-                    onSelect={setStatus}
-                    width={"259px"}
-                  />
+ 
+                  <div>
+                    <CustomDropdown
+                      options={statuses}
+                      selectedValue={status}
+                      onSelect={setStatus}
+                      width={"259px"}
+                    />
+                  </div>
+                </div>
+
+                <div id="employee">
+                  <img src={task.employee.avatar} alt="" />
+                  <div>
+                    <p>{task.employee.department.name}</p>
+                    <h5>
+                      {task.employee.name} {task.employee.surname}
+                    </h5>
+                  </div>
                 </div>
               </div>
-
-              <div id="employee">
-                <img src={task.employee.avatar} alt="" />
-                <div>
-                  <p>{task.employee.department.name}</p>
-                  <h5>
-                    {task.employee.name} {task.employee.surname}
-                  </h5>
-                </div>
-              </div>
-
               <div>
                 <div id="date">{task.due_date.slice(0, 10)}</div>
               </div>
@@ -252,15 +292,21 @@ const SingleTask = () => {
           <form onSubmit={handleSubmit}>
             <div>
               <textarea
-                placeholder="დაწერე კომენტარი"
+                id="textarea"
+                ref={textareaRef}
+                placeholder={replyToCommentId ? "უპასუხე" : "დაწერე კომენტარი"}
+                value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
-              <button type="submit">დააკომენტარე</button>
+              <button type="submit">
+                {replyToCommentId ? "პასუხი" : "დააკომენტარე"}{" "}
+              </button>
             </div>
           </form>
 
           <h6 id="comments">
-            კომენტარები <span>{comments.length}</span>
+            კომენტარები <span>{totalComments}</span>
           </h6>
 
           {comments.map((comment) => {
@@ -271,16 +317,39 @@ const SingleTask = () => {
                   <div className="comment">
                     <h6>{comment.author_nickname}</h6>
                     <p>{comment.text}</p>
-                    <button>
-                      <img
-                        src=" \assets\images\Left.svg"
-                        id="reply"
-                        alt="reply"
-                      />
-                      უპასუხე
-                    </button>
+                    <label htmlFor="textarea">
+                      <button onClick={() => handleReplyClick(comment.id)}>
+                        <img
+                          src=" \assets\images\Left.svg"
+                          id="reply"
+                          alt="reply"
+                        />
+                        უპასუხე
+                      </button>
+                    </label>
                   </div>
                 </div>
+
+                {Array.isArray(comment.sub_comments) &&
+                  comment.sub_comments.length > 0 && (
+                    <div className="reply-commentInfo">
+                      {comment.sub_comments.map((subComment) => (
+                        <div key={subComment.id}>
+                          <div>
+                            <img
+                              src={subComment.author_avatar}
+                              id="profile"
+                              alt="author"
+                            />
+                            <div className="comment">
+                              <h6>{subComment.author_nickname}</h6>
+                              <p>{subComment.text}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
               </div>
             );
           })}
