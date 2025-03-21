@@ -123,7 +123,9 @@ function RenderTask({
                     </div>
                     <div
                       className="task-profession"
-                      style={{ backgroundColor: departmentColors(task.department.name) }}
+                      style={{
+                        backgroundColor: departmentColors(task.department.name),
+                      }}
                     >
                       {departmentNames(task.department.id)}
                     </div>
@@ -137,7 +139,10 @@ function RenderTask({
                 <div className="task-bottom">
                   <img src={task.employee.avatar} />
                   <div>
-                    <img src="/assets/images/comments.svg" alt="comments" />
+                    <img
+                      src="/Redberry-project/assets/images/comments.svg"
+                      alt="comments"
+                    />
                     <span>8</span>
                   </div>
                 </div>

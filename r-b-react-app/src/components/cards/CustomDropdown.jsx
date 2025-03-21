@@ -125,9 +125,12 @@ const CustomDropdown = ({
             </span>
           </div>
           {isVisible ? (
-            <img src="/assets/images/upArrow.svg" alt="arrow" />
+            <img
+              src="/Redberry-project/assets/images/upArrow.svg"
+              alt="arrow"
+            />
           ) : (
-            <img src="/assets/images/arrow.svg" alt="arrow" />
+            <img src="/Redberry-project/assets/images/arrow.svg" alt="arrow" />
           )}
         </div>
 
@@ -138,7 +141,10 @@ const CustomDropdown = ({
           >
             {label === "პასუხისმგებელი თანამშრომელი" && (
               <div id="addEmployee" onClick={() => setVisible(true)}>
-                <img src="/assets/images/addEmployee.svg" alt="add employee" />
+                <img
+                  src="/Redberry-project/assets/images/addEmployee.svg"
+                  alt="add employee"
+                />
                 <p>დაამატე თანამშრომელი</p>
               </div>
             )}

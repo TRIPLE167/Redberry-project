@@ -61,7 +61,7 @@ function AddEmployee({ isOpen, setIsOpen, visible, setVisible }) {
     console.log("surname:", lastName);
     console.log("avatar:", avatar);
     console.log("department_id:", department);
-    
+
     try {
       await axios.post(
         "https://momentum.redberryinternship.ge/api/employees",
@@ -110,7 +110,7 @@ function AddEmployee({ isOpen, setIsOpen, visible, setVisible }) {
       <div className="main-container">
         <div>
           <button onClick={handleClosing}>
-            <img src="/assets/images/closing.svg" alt="" />
+            <img src="/Redberry-project/assets/images/closing.svg" alt="" />
           </button>
           <h2>თანამშრომლის დამატება</h2>
           <div className="main-container-middle">
@@ -166,11 +166,16 @@ function AddEmployee({ isOpen, setIsOpen, visible, setVisible }) {
             <h3 className="bot-2-h3">ავატარი</h3>
             <label>
               <div className="file-upload">
-                <input type="file" id="file" onChange={handleFileChange} ref={fileInputRef} />
+                <input
+                  type="file"
+                  id="file"
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                />
                 <div>
                   {!avatar && (
                     <div>
-                      <img src="/assets/images/upload.svg" />
+                      <img src="/Redberry-project/assets/images/upload.svg" />
                       <p>ატვირთე ფოტო</p>
                     </div>
                   )}
@@ -193,7 +198,10 @@ function AddEmployee({ isOpen, setIsOpen, visible, setVisible }) {
                           fileInputRef.current.value = null;
                         }}
                       >
-                        <img src="/assets/images/trashBin.svg" alt="" />
+                        <img
+                          src="/Redberry-project/assets/images/trashBin.svg"
+                          alt=""
+                        />
                       </button>
                     </>
                   )}
@@ -216,7 +224,7 @@ function AddEmployee({ isOpen, setIsOpen, visible, setVisible }) {
                     );
                   })}
                 </select>
-                <img src="/assets/images/arrow.svg" alt="" />
+                <img src="/Redberry-project/assets/images/arrow.svg" alt="" />
               </div>
             </label>
           </div>

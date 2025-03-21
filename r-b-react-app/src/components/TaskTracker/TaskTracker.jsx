@@ -9,7 +9,6 @@ function TaskTracker() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const { priorities, departments, employees } = useContext(DataContext);
 
- 
   const [selectedDepartments, setSelectedDepartments] = useState(
     JSON.parse(localStorage.getItem("selectedDepartments")) || []
   );
@@ -20,11 +19,19 @@ function TaskTracker() {
     JSON.parse(localStorage.getItem("selectedEmployees")) || []
   );
 
- 
   useEffect(() => {
-    localStorage.setItem("selectedDepartments", JSON.stringify(selectedDepartments));
-    localStorage.setItem("selectedPriorities", JSON.stringify(selectedPriorities));
-    localStorage.setItem("selectedEmployees", JSON.stringify(selectedEmployees));
+    localStorage.setItem(
+      "selectedDepartments",
+      JSON.stringify(selectedDepartments)
+    );
+    localStorage.setItem(
+      "selectedPriorities",
+      JSON.stringify(selectedPriorities)
+    );
+    localStorage.setItem(
+      "selectedEmployees",
+      JSON.stringify(selectedEmployees)
+    );
   }, [selectedDepartments, selectedPriorities, selectedEmployees]);
 
   const toggleDropdown = (index) => {
@@ -33,11 +40,17 @@ function TaskTracker() {
 
   const removeSelection = (type, id) => {
     if (type === "department") {
-      setSelectedDepartments(selectedDepartments.filter((deptId) => deptId !== id));
+      setSelectedDepartments(
+        selectedDepartments.filter((deptId) => deptId !== id)
+      );
     } else if (type === "priority") {
-      setSelectedPriorities(selectedPriorities.filter((priorityId) => priorityId !== id));
+      setSelectedPriorities(
+        selectedPriorities.filter((priorityId) => priorityId !== id)
+      );
     } else if (type === "employee") {
-      setSelectedEmployees(selectedEmployees.filter((employeeId) => employeeId !== id));
+      setSelectedEmployees(
+        selectedEmployees.filter((employeeId) => employeeId !== id)
+      );
     } else if (type === "clear") {
       setSelectedDepartments([]);
       setSelectedPriorities([]);
@@ -81,20 +94,20 @@ function TaskTracker() {
           {selectedDepartments.map((id) => (
             <button key={id} onClick={() => removeSelection("department", id)}>
               {departments.find((dept) => dept.id === id)?.name}
-              <img src="/assets/images/x.svg" alt="" />
+              <img src="/Redberry-project/assets/images/x.svg" alt="" />
             </button>
           ))}
           {selectedPriorities.map((id) => (
             <button key={id} onClick={() => removeSelection("priority", id)}>
               {priorities.find((priority) => priority.id === id)?.name}
-              <img src="/assets/images/x.svg" alt="" />
+              <img src="/Redberry-project/assets/images/x.svg" alt="" />
             </button>
           ))}
           {selectedEmployees.map((id) => (
             <button key={id} onClick={() => removeSelection("employee", id)}>
               {employees.find((employee) => employee.id === id)?.name}{" "}
               {employees.find((employee) => employee.id === id)?.surname}
-              <img src="/assets/images/x.svg" alt="" />
+              <img src="/Redberry-project/assets/images/x.svg" alt="" />
             </button>
           ))}
           {(selectedDepartments.length > 0 ||

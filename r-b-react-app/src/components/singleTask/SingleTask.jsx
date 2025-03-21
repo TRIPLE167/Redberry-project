@@ -246,22 +246,27 @@ const SingleTask = () => {
           <div className="task-details">
             <div className="details-left">
               <p>
-                <img src="/assets/images/pie-chart.svg" alt="" />
+                <img
+                  src="/Redberry-project/assets/images/pie-chart.svg"
+                  alt=""
+                />
                 <span>სტატუსი</span>
               </p>
               <p>
-                <img src="/assets/images/user.svg" alt="" />
+                <img src="/Redberry-project/assets/images/user.svg" alt="" />
                 <span>თანამშრომელი</span>
               </p>
               <p>
-                <img src="/assets/images/calendar.svg" alt="" />
+                <img
+                  src="/Redberry-project/assets/images/calendar.svg"
+                  alt=""
+                />
                 <span>დავალების ვადა</span>
               </p>
             </div>
             <div className="details-right">
               <div>
                 <div>
- 
                   <div>
                     <CustomDropdown
                       options={statuses}
