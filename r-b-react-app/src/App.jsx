@@ -8,7 +8,7 @@ import SingleTask from "./components/singleTask/SingleTask";
 function App() {
   return (
     <DataProvider>
-      <Router>
+      <Router basename="/Redberry-project/">
         <Routes>
           <Route path="/" element={<TaskTracker />} />
           <Route path="/new-task" element={<NewTask />} />
@@ -20,4 +20,3 @@ function App() {
 }
 
 export default App;
-
