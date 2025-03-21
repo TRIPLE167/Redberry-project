@@ -5,8 +5,12 @@ h1 {
   margin-top: 40px;
 }
 .create-task {
-  margin-top: 95px;
+  margin-top: 24px;
   display: flex;
+  background-color: #FBF9FFA6;
+  border: 0.3px solid #DDD2FF;
+  padding-top: 71px;
+  padding-left: 55px;
   column-gap: 161px;
   .create-task-left {
     display: flex;

@@ -35,7 +35,6 @@ function NewTask() {
 
     if (taskDescription.length < 2 || taskDescription.length > 255) {
       setDesValidation("red");
-      isValid = false;
     } else {
       setDesValidation("green");
     }
